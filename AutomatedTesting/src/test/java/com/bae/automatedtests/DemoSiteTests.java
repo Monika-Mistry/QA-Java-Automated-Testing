@@ -1,4 +1,4 @@
-package com.bae.demositetests;
+package com.bae.automatedtests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
