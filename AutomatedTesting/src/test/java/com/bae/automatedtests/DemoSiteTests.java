@@ -99,8 +99,10 @@ public class DemoSiteTests {
 		pwField.sendKeys("password");
 
 		btn.click();
+		WebElement res = driver
+				.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b"));
 
-		Thread.sleep(2000);
+		assertEquals("**Successful Login**", res.getText());
 
 	}
 
