@@ -1,6 +1,7 @@
 package com.bae.automatedtests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -8,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -50,6 +52,7 @@ public class PHPTravelTests {
 		assertEquals(url, driver.getCurrentUrl());
 	}
 
+	@Ignore
 	@Test
 	public void goToPage2() {
 
@@ -63,27 +66,49 @@ public class PHPTravelTests {
 		searchBtn.click();
 
 		WebElement p1 = driver.findElement(By.xpath("//*[@id=\"body-section\"]/div[5]/div/div[3]/div[2]/ul/li[2]"));
-		action.moveToElement(p1).perform();
-		action.click().perform();
+		action.moveToElement(p1).click().perform();
 		System.out.println(driver.getCurrentUrl());
 
 		WebElement p2 = driver.findElement(By.xpath("//*[@id=\"body-section\"]/div[5]/div/div[3]/div[2]/ul/li[3]"));
-		action.moveToElement(p2).perform();
-		action.click().perform();
+		action.moveToElement(p2).click().perform();
 
 		System.out.println(driver.getCurrentUrl());
 
 		WebElement plaza = driver.findElement(By.xpath(
 				"//*[@id=\"body-section\"]/div[5]/div/div[3]/div[1]/div/table/tbody/tr[3]/td/div[2]/div/h4/a/b"));
 
-		action.moveToElement(plaza).perform();
-		action.click().perform();
+		action.moveToElement(plaza).click().perform();
 
 		String url = "https://www.phptravels.net/hotels/detail/London/Grand-Plaza-Apartments";
 		System.out.println(driver.getCurrentUrl());
 
 		assertEquals(url, driver.getCurrentUrl());
 
+	}
+
+	@Test
+	public void submitBooking() {
+		Actions action = new Actions(driver);
+		driver.navigate().to("https://www.phptravels.net/hotels/detail/London/Grand-Plaza-Apartments");
+		WebElement in = driver.findElement(By.xpath("//*[@id=\"dpd1\"]/div/input"));
+		WebElement out = driver.findElement(By.xpath("//*[@id=\"dpd2\"]/div/input"));
+		WebElement ppl = driver.findElement(By.xpath("//*[@id=\"adults\"]"));
+		WebElement btn = driver
+				.findElement(By.xpath("//*[@id=\"body-section\"]/div[4]/div[2]/div/div[2]/form/div[5]/input[3]"));
+
+		action.sendKeys(Keys.PAGE_DOWN).moveToElement(in).sendKeys("30/05/2019").perform();
+		action.moveToElement(out).sendKeys("01/06/2019").perform();
+		// out.sendKeys(Keys.TAB);
+		action.moveToElement(ppl).sendKeys("3").perform();
+		;
+		action.moveToElement(btn).click().perform();
+
+		WebElement room = driver.findElement(
+				By.xpath("//*[@id=\"ROOMS\"]/div/table/tbody/tr[1]/td/div[2]/div[2]/div/div[3]/div/label/div"));
+
+		action.sendKeys(Keys.PAGE_DOWN).moveToElement(room).click().perform();
+
+		assertTrue(room.isSelected());
 	}
 
 }
