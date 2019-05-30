@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -84,7 +83,6 @@ public class ShoppingWebsiteTest {
 		assertTrue(header.getText().contains("Printed Summer Dress"));
 	}
 
-	@Ignore
 	@Test
 	public void addItemToCart() {
 
@@ -98,9 +96,5 @@ public class ShoppingWebsiteTest {
 
 		WebElement addCart = driver.findElement(By.xpath("//*[@id=\"add_to_cart\"]/button"));
 		addCart.click();
-
-		WebElement success = driver.findElement(By.xpath("//*[@id=\"layer_cart\"]/div[1]/div[1]/h2"));
-		assertEquals("product successfully added to your shopping cart", success.getText().toLowerCase().trim());
-
 	}
 }

@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -14,6 +13,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+
+import resources.Constants;
 
 public class PHPTravelTest {
 
@@ -36,15 +37,14 @@ public class PHPTravelTest {
 		driver.get("https://www.phptravels.net/");
 	}
 
-	@Ignore
 	@Test
 	public void searchHome() {
 		WebElement in = driver.findElement(By.xpath("//*[@id=\"dpd1\"]/div/input"));
 		WebElement out = driver.findElement(By.xpath("//*[@id=\"dpd2\"]/div/input"));
 		WebElement search = driver.findElement(By.xpath("//*[@id=\"hotels\"]/form/div[5]/button"));
 
-		in.sendKeys("30/05/2019");
-		out.sendKeys("01/06/2019");
+		in.sendKeys(Constants.CHECKIN);
+		out.sendKeys(Constants.CHECKOUT);
 		search.click();
 
 		String url = "https://www.phptravels.net/hotels/search/30-05-2019/01-06-2019/2/0";
@@ -52,7 +52,6 @@ public class PHPTravelTest {
 		assertEquals(url, driver.getCurrentUrl());
 	}
 
-	@Ignore
 	@Test
 	public void goToPage2() {
 
@@ -61,8 +60,8 @@ public class PHPTravelTest {
 		WebElement out = driver.findElement(By.xpath("//*[@id=\"dpd2\"]/div/input"));
 		WebElement searchBtn = driver.findElement(By.xpath("//*[@id=\"hotels\"]/form/div[5]/button"));
 
-		in.sendKeys("30/05/2019");
-		out.sendKeys("01/06/2019");
+		in.sendKeys(Constants.CHECKIN);
+		out.sendKeys(Constants.CHECKOUT);
 		searchBtn.click();
 
 		WebElement p1 = driver.findElement(By.xpath("//*[@id=\"body-section\"]/div[5]/div/div[3]/div[2]/ul/li[2]"));
@@ -90,14 +89,16 @@ public class PHPTravelTest {
 	public void submitBooking() {
 		Actions action = new Actions(driver);
 		driver.navigate().to("https://www.phptravels.net/hotels/detail/London/Grand-Plaza-Apartments");
-		WebElement in = driver.findElement(By.xpath("//*[@id=\"dpd1\"]/div/input"));
-		WebElement out = driver.findElement(By.xpath("//*[@id=\"dpd2\"]/div/input"));
+		WebElement in = driver
+				.findElement(By.xpath("//*[@id=\"body-section\"]/div[4]/div[2]/div/div[2]/form/div[1]/div/input"));
+		WebElement out = driver
+				.findElement(By.xpath("//*[@id=\"body-section\"]/div[4]/div[2]/div/div[2]/form/div[2]/div/input"));
 		WebElement ppl = driver.findElement(By.xpath("//*[@id=\"adults\"]"));
 		WebElement btn = driver
 				.findElement(By.xpath("//*[@id=\"body-section\"]/div[4]/div[2]/div/div[2]/form/div[5]/input[3]"));
 
-		action.sendKeys(Keys.PAGE_DOWN).moveToElement(in).sendKeys("30/05/2019").perform();
-		action.moveToElement(out).sendKeys("01/06/2019").perform();
+		action.sendKeys(Keys.PAGE_DOWN).moveToElement(in).sendKeys(Constants.CHECKIN).perform();
+		action.moveToElement(out).sendKeys(Constants.CHECKOUT).perform();
 		// out.sendKeys(Keys.TAB);
 		action.moveToElement(ppl).sendKeys("3").perform();
 		;
