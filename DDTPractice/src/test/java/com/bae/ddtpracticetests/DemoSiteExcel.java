@@ -76,7 +76,6 @@ public class DemoSiteExcel {
 		driver.get(Constants.DSURL);
 	}
 
-	@Ignore
 	@Test
 	public void readFromFile() {
 		XSSFCell usr = sheet.getRow(0).getCell(0);
@@ -88,7 +87,6 @@ public class DemoSiteExcel {
 		assertEquals("Result", res.getStringCellValue());
 	}
 
-	@Ignore
 	@Test
 	public void addUser1() {
 
@@ -119,7 +117,6 @@ public class DemoSiteExcel {
 
 	}
 
-	@Ignore
 	@Test
 	public void addUser2() {
 
@@ -150,7 +147,6 @@ public class DemoSiteExcel {
 
 	}
 
-	@Ignore
 	@Test
 	public void addUser3() {
 
@@ -181,7 +177,6 @@ public class DemoSiteExcel {
 
 	}
 
-	@Ignore
 	@Test
 	public void addUser4() {
 
@@ -212,6 +207,7 @@ public class DemoSiteExcel {
 
 	}
 
+	@Ignore
 	@Test
 	public void loginUsr1() {
 		driver.navigate().to(Constants.ADDUSERURL);
