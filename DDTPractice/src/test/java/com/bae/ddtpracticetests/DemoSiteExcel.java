@@ -3,6 +3,7 @@ package com.bae.ddtpracticetests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,7 +30,6 @@ public class DemoSiteExcel {
 	public static FileInputStream file;
 	public static XSSFWorkbook workbook;
 	public static XSSFSheet sheet;
-	public static FileOutputStream out;
 
 	@BeforeClass
 	public static void setup() {
@@ -50,13 +50,6 @@ public class DemoSiteExcel {
 
 		sheet = workbook.getSheetAt(0);
 
-		// try {
-		// out = new FileOutputStream(Constants.PATH_TESTDATA +
-		// Constants.FILE_TESTDATA);
-		// } catch() {
-		//
-		// }
-
 	}
 
 	@AfterClass
@@ -74,6 +67,7 @@ public class DemoSiteExcel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 	@Before
@@ -94,6 +88,7 @@ public class DemoSiteExcel {
 		assertEquals("Result", res.getStringCellValue());
 	}
 
+	@Ignore
 	@Test
 	public void addUser1() {
 
@@ -124,6 +119,7 @@ public class DemoSiteExcel {
 
 	}
 
+	@Ignore
 	@Test
 	public void addUser2() {
 
@@ -154,6 +150,7 @@ public class DemoSiteExcel {
 
 	}
 
+	@Ignore
 	@Test
 	public void addUser3() {
 
@@ -184,6 +181,7 @@ public class DemoSiteExcel {
 
 	}
 
+	@Ignore
 	@Test
 	public void addUser4() {
 
@@ -215,59 +213,71 @@ public class DemoSiteExcel {
 	}
 
 	@Test
-	public void login() {
+	public void loginUsr1() {
 		driver.navigate().to(Constants.ADDUSERURL);
 
-		WebElement userField = driver.findElement(By.name("username"));
-		WebElement pwField = driver.findElement(By.name("password"));
-		WebElement btn = driver.findElement(By.name("FormsButton2"));
-		WebElement login = driver
-				.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[2]/small/a"));
+		WebElement userFieldAU = driver.findElement(By.name("username"));
+		WebElement pwFieldAU = driver.findElement(By.name("password"));
+		WebElement btnAU = driver.findElement(By.name("FormsButton2"));
 
-		XSSFCell usr1 = sheet.getRow(1).getCell(0);
-		XSSFCell pw1 = sheet.getRow(1).getCell(1);
+		XSSFCell usr = sheet.getRow(1).getCell(0);
+		XSSFCell pw = sheet.getRow(1).getCell(1);
+		XSSFCell rescell = sheet.getRow(1).createCell(2);
 
-		userField.click();
-		userField.sendKeys(usr1.getStringCellValue());
+		userFieldAU.click();
+		userFieldAU.sendKeys(usr.getStringCellValue());
+
+		pwFieldAU.click();
+		pwFieldAU.sendKeys(pw.getStringCellValue());
+
+		btnAU.click();
+
+		WebElement login = driver.findElement(
+				By.xpath("/html/body/div/center/table/tbody/tr[2]/td/div/center/table/tbody/tr/td[2]/p/small/a[4]"));
+
+		login.click();
+
+		WebElement userField = driver.findElement(By.xpath(
+				"/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[1]/td[2]/p/input"));
+		WebElement pwField = driver.findElement(By.xpath(
+				"/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[2]/td[2]/p/input"));
+		WebElement btn = driver.findElement(By.xpath(
+				"/html/body/table/tbody/tr/td[1]/form/div/center/table/tbody/tr/td[1]/table/tbody/tr[3]/td[2]/p/input"));
+
+		userField.sendKeys(usr.getStringCellValue());
 
 		pwField.click();
-		pwField.sendKeys(pw1.getStringCellValue());
+		pwField.sendKeys(pw.getStringCellValue());
 
 		btn.click();
 
-		XSSFCell usr2 = sheet.getRow(2).getCell(0);
-		XSSFCell pw2 = sheet.getRow(2).getCell(1);
+		WebElement res = driver
+				.findElement(By.xpath("/html/body/table/tbody/tr/td[1]/big/blockquote/blockquote/font/center/b"));
 
-		userField.click();
-		userField.sendKeys(usr2.getStringCellValue());
+		// System.out.println(rescell);
 
-		pwField.click();
-		pwField.sendKeys(pw2.getStringCellValue());
+		// if (rescell.equals(null)) {
+		// sheet.getRow(1).createCell(2);
+		// }
+		//
+		// rescell.setCellValue(res.getText());
 
-		btn.click();
+		try {
+			FileOutputStream out = new FileOutputStream(new File(Constants.PATH_TESTDATA + Constants.FILE_TESTDATA));
+			try {
 
-		XSSFCell usr3 = sheet.getRow(3).getCell(0);
-		XSSFCell pw3 = sheet.getRow(3).getCell(1);
+				workbook.write(out);
+				out.close();
+			} catch (IOException e) {
 
-		userField.click();
-		userField.sendKeys(usr3.getStringCellValue());
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
 
-		pwField.click();
-		pwField.sendKeys(pw3.getStringCellValue());
+			e.printStackTrace();
+		}
 
-		btn.click();
-
-		XSSFCell usr4 = sheet.getRow(4).getCell(0);
-		XSSFCell pw4 = sheet.getRow(4).getCell(1);
-
-		userField.click();
-		userField.sendKeys(usr4.getStringCellValue());
-
-		pwField.click();
-		pwField.sendKeys(pw4.getStringCellValue());
-
-		btn.click();
-
+		assertTrue("Login First User Unsuccessful", res.getText().contains("Successful"));
 	}
 
 }
